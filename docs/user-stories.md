@@ -19,7 +19,7 @@ Clink isn't meant to replace the bank app. Its job is to bring people back to it
 Other tap-to-pay users also rarely check their bank app after spending. *Next step: a quick survey or a few conversations with classmates and friends.*
 
 ## Target user
-
+Young adults and college students who pay mostly with Apple Pay or other tap-to-pay methods. They value the convenience of contactless payment but rarely check their bank app afterwards, so they often lose track of how much they've spent.
 
 ---
 
@@ -52,11 +52,23 @@ Other tap-to-pay users also rarely check their bank app after spending. *Next st
 ---
 
 ## Out of scope for MVP (roadmap)
-- 
+In the MVP, purchases are entered by hand so the core experience (cap → purchase → clink → alert) can be built and tested first.
+
+**Next (top priority after MVP)**
+- Automatic purchase syncing through Plaid, so tap-to-pay purchases appear in Clink without manual entry
+
+**Later**
+- Weekly cap option (in addition to daily)
+- Heads-up alert when no cap is set but spending passes a significant amount
+- Phone notifications and vibration when the cap is reached
+- Apple Wallet / Shortcuts automation
+- User accounts and login
 
 ---
 
 ## Story → screen map
 | Screen | Stories |
 |---|---|
-|  |  |
+| Cap Setup | US-1 |
+| Add Purchase | US-2 |
+| Dashboard (includes alerts) | US-2, US-3 |
