@@ -25,23 +25,29 @@ Other tap-to-pay users also rarely check their bank app after spending. *Next st
 
 ## MVP user stories
 
-### US-1 — 
-**As a** ___, **I want to** ___, **so that** ___.
+### US-1: Set a daily cap
+**As a** tap-to-pay user, **I want to** set a daily spending cap, **so that** I have a clear limit to stay within.
 
 **Acceptance criteria**
-- 
+- Given I'm on the setup screen, when I enter an amount above $0 and save, then it becomes my daily cap.
+- Given I enter $0, a negative number, or letters, when I try to save, then I see an error and nothing is saved.
+- Given I already have a cap, when I change it, then the new amount shows on my dashboard.
 
-### US-2 — 
-**As a** ___, **I want to** ___, **so that** ___.
-
-**Acceptance criteria**
-- 
-
-### US-3 — 
-**As a** ___, **I want to** ___, **so that** ___.
+### US-2: See what I spent and what's left
+**As a** tap-to-pay user, **I want to** see how much I just spent and how much of my cap is left after each purchase, **so that** I stay aware of my spending in the moment.
 
 **Acceptance criteria**
-- 
+- Given I log a purchase, then I hear the *clink* sound and see "You spent $X, $Y left."
+- Given I open the dashboard, then I see my cap, my total spent today, and the amount remaining.
+- Remaining = cap − total of today's purchases.
+
+### US-3: Get alerted at my limit
+**As a** tap-to-pay user, **I want to** be alerted when I'm close to or have reached my cap, **so that** I can stop and check my bank app before overspending.
+
+**Acceptance criteria**
+- Given a purchase brings me to 75% or more of my cap, then I see a "Heads up: $Y left" message.
+- Given a purchase brings me to 100% or more of my cap, then I see a clear "You've reached your limit" alert with a prompt to open my bank app.
+- Alerts use supportive wording, not judgmental wording.
 
 ---
 
