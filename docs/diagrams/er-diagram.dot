@@ -12,6 +12,7 @@ digraph ER {
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">email</TD><TD>UK</TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">password_hash</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">shortcut_token</TD><TD>UK</TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">timezone</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">datetime</TD><TD ALIGN="LEFT">created_at</TD><TD></TD></TR>
   </TABLE>>];
 

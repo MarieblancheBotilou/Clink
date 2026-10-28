@@ -4,6 +4,22 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-28 · 11:10 AM CT: Relational schema: UTC times + user time zone; database-enforced rules
+
+**Decision**
+- Add a **`timezone`** column to User. Store all times in UTC and convert using the user's time zone.
+- Enforce rules in the database itself, not just the app: one settings row per user, at most one daily and one weekly budget, amounts must be above $0, period must be daily or weekly.
+- Deleting an account deletes that user's settings, budgets, and purchases (`ON DELETE CASCADE`).
+- Merchant is optional, since the shortcut doesn't always provide it.
+- Weeks start on Monday for the MVP.
+
+**Why**
+- A daily budget has to reset at the user's midnight, not the server's. Without a time zone, an 11:30 PM purchase in Texas would count toward the next day.
+- Rules in the database protect the data even if there's a bug in the app code.
+- Users who delete their account shouldn't leave financial data behind.
+
+---
+
 ## 2026-10-28 · 11:00 AM CT: Data model: Settings gets its own table; no Alerts table
 
 **Decision**

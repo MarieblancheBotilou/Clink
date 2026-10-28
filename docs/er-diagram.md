@@ -12,7 +12,7 @@ Each table has a bold header row labeling its columns: **Data type**, **Column n
 
 | Entity | What it is | Key attributes |
 |---|---|---|
-| **User** | A person using Clink | name, email, password (hashed), shortcut token |
+| **User** | A person using Clink | name, email, password (hashed), shortcut token, time zone |
 | **Settings** | That user's preferences | notifications on/off, clink sound on/off, alert level (%), reduce motion |
 | **Budget** | A spending cap | period (daily or weekly), amount, on/off |
 | **Purchase** | One Apple Pay transaction | amount, merchant, date & time |
