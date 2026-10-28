@@ -25,9 +25,7 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 
 ## MVP user stories
 
-> **How purchases get into Clink:** there is no manual entry. Purchases are captured automatically from two sources:
-> 1. **Apple Shortcuts "Transaction" automation**: fires within seconds of an Apple Pay tap and sends the amount and merchant to Clink's server. This is what makes the clink feel immediate.
-> 2. **Plaid**: syncs transactions from the linked bank account, catching anything the shortcut missed, confirming final amounts, and building history. The server matches the two sources so a purchase is never counted twice.
+> **How purchases get into Clink:** there is no manual entry. An **Apple Shortcuts "Transaction" automation** runs when the user pays with Apple Pay and sends the amount and merchant to Clink's server within seconds. Clink tracks **Apple Pay purchases only**, and no bank login is required.
 >
 > See [`decision-log.md`](decision-log.md) for why.
 
@@ -49,22 +47,20 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 - Given I enter $0, a negative number, or letters, when I try to save, then I see an error and nothing is saved.
 - Given I already have a cap, when I change it, then the new amount shows on my home screen.
 
-### US-3: Connect my payments
-**As a** tap-to-pay user, **I want to** link my bank and set up the Clink shortcut once, **so that** my purchases are tracked automatically without me entering anything.
+### US-3: Set up automatic tracking
+**As a** tap-to-pay user, **I want to** set up the Clink shortcut once, **so that** my Apple Pay purchases are tracked automatically without me entering anything.
 
 **Acceptance criteria**
-- Given I'm in onboarding, when I tap "Link your bank," then Plaid Link opens and I can connect my account.
-- Given the link succeeds, then Clink shows the connected bank and begins syncing transactions.
-- Given I'm on the shortcut setup screen, then I see simple step-by-step instructions (with images) to add the Clink shortcut.
-- Given the bank link fails or I cancel, then I see a friendly message and can try again.
+- Given I'm in onboarding, then I see simple step-by-step instructions (with images) to add the Clink shortcut.
+- Given the shortcut is set up, when I make a test purchase or tap "Send test," then Clink confirms it's connected.
+- Given setup isn't finished, then the home screen reminds me to finish it.
 
-### US-4: Hear the clink after I pay
-**As a** tap-to-pay user, **I want to** hear a clink and get a notification telling me what I spent and what's left shortly after I pay, **so that** I stay aware of my spending without opening any app.
+### US-4: Know what I spent and what's left after every purchase
+**As a** tap-to-pay user, **I want to** be notified of what I just spent and how much of my cap is left every time I pay, **so that** I never spend blindly with Apple Pay.
 
 **Acceptance criteria**
-- Given I pay with Apple Pay, when the shortcut sends the purchase, then within seconds I hear the *clink* and see "You spent $X at [merchant] · $Y left."
-- Given a purchase arrives only through Plaid (the shortcut missed it), then it's logged and I still get the notification when Plaid delivers it.
-- Given the same purchase arrives from both the shortcut and Plaid, then it's counted once.
+- Given I pay with Apple Pay, then within seconds I hear the *clink* and get a notification: "You spent $X at [merchant] · $Y left."
+- This happens for **every** purchase, not just near the limit.
 - Remaining = cap − total of today's purchases.
 - The jar on the home screen updates to match.
 
@@ -87,7 +83,7 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 ---
 
 ## Development & testing note
-Plaid's sandbox uses fake bank data, and reviewers can't tap a real phone. A **developer-only "simulate a purchase"** button (hidden from users) triggers the same flow as a real purchase, so the clink, notification, jar, and alerts can be demoed and tested.
+Reviewers can't tap a real phone, so a **developer-only "simulate a purchase"** button (hidden from users) sends the same request the shortcut sends, letting the clink, notification, jar, and alerts be demoed and tested.
 
 ---
 
@@ -96,12 +92,14 @@ Plaid's sandbox uses fake bank data, and reviewers can't tap a real phone. A **d
 - Weekly cap option (in addition to daily)
 - Heads-up alert when no cap is set but spending passes a significant amount
 - Vibration patterns and custom notification settings
-- Moving from Plaid sandbox to real bank data (requires Plaid production approval)
+- *(Optional, maybe)* Plaid bank linking to catch purchases the shortcut misses and correct final amounts (e.g., tips). Not Apple Pay–specific, so not core.
 
 ---
 
-## Open questions
-- **Which purchases count toward the cap?** Apple Pay purchases are identified by the shortcut. Plaid can't reliably tell tap-to-pay from chip, swipe, or online purchases, so: count only shortcut-confirmed Apple Pay purchases, or all in-store card purchases from Plaid too?
+## Known limitations
+- **Physical card taps aren't tracked.** Only Apple Pay purchases trigger the shortcut. Banks don't report "tap vs. chip vs. swipe" reliably, so no tool can isolate contactless card taps.
+- **If the shortcut can't reach the server** (e.g., no signal), that purchase may be missed.
+- **Amounts are captured at the moment of tapping**, so tips added later (e.g., restaurants) aren't reflected.
 
 ---
 
@@ -110,7 +108,6 @@ Plaid's sandbox uses fake bank data, and reviewers can't tap a real phone. A **d
 |---|---|
 | Sign-up options / Email sign-up / Log in | US-1 |
 | Set cap | US-2 |
-| Link your bank (Plaid) | US-3 |
 | Set up the Clink shortcut | US-3 |
 | Notification (lock screen / banner) | US-4, US-5 |
 | Home (jar) | US-4, US-5 |

@@ -4,6 +4,28 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-27 · 9:16 PM CT: Drop Plaid; track Apple Pay purchases only, via the shortcut
+
+**Decision**
+- Remove Plaid from the MVP. The Apple Shortcuts automation is the only way purchases get into Clink.
+- Clink tracks **Apple Pay purchases only**.
+- Make "notified of what you spent and what's left after **every** purchase" its own user story (US-4). It's one of Clink's main pillars, separate from the limit alert.
+
+**Why**
+- Plaid isn't specific to Apple Pay or tap-to-pay: it returns *every* transaction on a linked account (chip, swipe, online, transfers). Since Clink is about not spending blindly with Apple Pay, Plaid doesn't serve the core purpose.
+- The shortcut fires only on Apple Pay and reports within seconds, which is exactly the behavior Clink targets.
+- Without Plaid, users never hand Clink their bank login. That's a big trust and privacy win for a money app.
+- It's simpler and faster to build (no Plaid sandbox, webhooks, de-duplication, or production approval).
+
+**Trade-offs / risks**
+- Physical card taps aren't tracked (no tool can reliably separate contactless card taps from chip/swipe).
+- Purchases can be missed if the shortcut can't reach the server, and tips added after tapping aren't captured.
+- Plaid stays on the roadmap as a possible optional accuracy add-on.
+
+**Resolves** the open question from the 9:10 PM entry: only Apple Pay purchases count toward the cap.
+
+---
+
 ## 2026-10-27 · 9:10 PM CT: Automatic purchase capture (Plaid + Apple Shortcuts); no manual entry
 
 **Decision**
