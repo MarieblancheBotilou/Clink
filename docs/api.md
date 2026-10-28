@@ -26,9 +26,9 @@ The API is the list of **endpoints**: web addresses on Clink's server that the a
 | 3 | GET | `/api/me` | 🔑 | Get my profile | US-1 |
 | 4 | PATCH | `/api/me` | 🔑 | Update name or time zone | US-1 |
 | 5 | DELETE | `/api/me` | 🔑 | Delete my account and all my data | US-1 |
-| 6 | GET | `/api/budgets` | 🔑 | Get my daily and weekly budgets | US-2 |
-| 7 | PUT | `/api/budgets/:period` | 🔑 | Set or change my `daily` or `weekly` budget | US-2 |
-| 8 | GET | `/api/status` | 🔑 | Home screen: budget, spent, what's left, jar stage | US-4, US-5 |
+| 6 | GET | `/api/budgets` | 🔑 | Get my weekly budget and daily caps | US-2 |
+| 7 | PUT | `/api/budgets` | 🔑 | Set or change my weekly budget and daily caps | US-2 |
+| 8 | GET | `/api/status` | 🔑 | Home screen: today + this week, what's left, jar stage | US-4, US-5 |
 | 9 | POST | `/api/purchases` | ⚡ | **The clink.** Shortcut reports an Apple Pay purchase | US-4, US-5 |
 | 10 | POST | `/api/shortcut/test` | ⚡ | "Send a test clink" during setup (nothing saved) | US-3 |
 | 11 | GET | `/api/shortcut` | 🔑 | Get my shortcut token and setup status | US-3 |
@@ -58,18 +58,30 @@ The API is the list of **endpoints**: web addresses on Clink's server that the a
 
 ---
 
-### 7. `PUT /api/budgets/:period` 🔑
-`:period` is `daily` or `weekly`. Creates the budget if it doesn't exist, or updates it if it does.
+### 7. `PUT /api/budgets` 🔑
+Saves the weekly budget and the daily caps together, so the "daily caps must fit inside the week" rule can be checked in one place.
 
-**Request**
+**Request: same amount every day**
 ```json
-{ "amount": 40.00, "is_active": true }
+{
+  "weekly": { "amount": 150.00, "is_active": true },
+  "daily":  { "is_active": true, "mode": "same", "amount": 20.00 }
+}
 ```
-**Response `200 OK`**
+**Request: different amount per day** (Monday first)
 ```json
-{ "period": "daily", "amount": 40.00, "is_active": true }
+{
+  "weekly": { "amount": 150.00, "is_active": true },
+  "daily":  { "is_active": true, "mode": "per_day", "amounts": [15, 15, 15, 15, 30, 30, 30] }
+}
 ```
-**Errors:** `400` amount ≤ 0 or not a number · `404` period isn't `daily` or `weekly`
+**Server does:** validates every amount > 0 → if both are active, checks that the 7 daily caps add up to no more than the weekly amount → saves 1 weekly row + 7 daily rows.
+
+**Response `200 OK`**: the saved budgets, in the same shape.
+
+**Errors**
+- `400 INVALID_AMOUNT`: an amount is ≤ 0 or not a number.
+- `400 DAILY_EXCEEDS_WEEKLY`: "Your daily caps add up to $175.00, which is more than your $150.00 weekly budget."
 
 ---
 
@@ -77,16 +89,17 @@ The API is the list of **endpoints**: web addresses on Clink's server that the a
 **Response `200 OK`**
 ```json
 {
-  "budgets": [
-    { "period": "daily",  "amount": 40.00, "spent": 32.00, "remaining": 8.00,  "percent_used": 80, "jar_stage": 2 },
-    { "period": "weekly", "amount": 150.00, "spent": 95.50, "remaining": 54.50, "percent_used": 64, "jar_stage": 3 }
-  ],
-  "alert": "heads_up"
+  "today":  { "cap": 20.00,  "spent": 14.00, "remaining": 6.00,  "percent_used": 70, "jar_stage": 2 },
+  "week":   { "budget": 150.00, "spent": 70.00, "remaining": 80.00, "percent_used": 47 },
+  "alerts": []
 }
 ```
-- `remaining` is calculated, never stored: `amount − sum(purchases in the period)`. It can go negative when over.
+- **The jar shows `today`.** The week's remaining amount is shown smaller underneath.
+- `remaining` is calculated, never stored, and can go negative when over.
 - `jar_stage`: 6 = full … 1 = almost empty, 0 = empty/over (matches the six jar drawings).
-- `alert`: `null`, `"heads_up"` (at or past the user's alert level), or `"limit_reached"`.
+- `alerts` can include `"daily_heads_up"`, `"daily_limit"`, `"weekly_heads_up"`, `"weekly_limit"`.
+- If a budget is off, its object is `null`. If daily caps are off, the jar shows the week instead.
+- Unspent daily money is **not** carried over; it stays in the weekly pool.
 
 ---
 
@@ -101,30 +114,42 @@ Called by the Apple Pay shortcut seconds after a tap.
 1. Finds the user by shortcut token (`401` if none matches).
 2. Validates the amount (> 0).
 3. Saves the `purchases` row.
-4. Recalculates spent / remaining for the user's active budget(s), using the user's time zone.
-5. Decides the alert level.
+4. Recalculates today's and this week's spent / remaining, using the user's time zone (weeks start Monday).
+5. Decides alerts for today and the week (heads-up at the user's alert level, limit at 100%).
 6. Builds the notification text.
 
 **Response `201 Created`** (the shortcut turns this into the notification and plays the clink)
 ```json
 {
-  "notification": "You spent $6.00 at Starbucks · $34.00 left",
-  "remaining": 34.00,
-  "alert": null,
+  "notification": "You spent $6.00 at Starbucks · $14.00 left today · $80.00 left this week",
+  "today_remaining": 14.00,
+  "week_remaining": 80.00,
+  "alerts": [],
   "play_sound": true
 }
 ```
-When the cap is reached:
+When today's cap is reached:
 ```json
 {
-  "notification": "You've reached your limit · −$5.00 over. Check your bank app.",
-  "remaining": -5.00,
-  "alert": "limit_reached",
+  "notification": "You've reached today's limit · −$5.00 over · $55.00 left this week. Check your bank app.",
+  "today_remaining": -5.00,
+  "week_remaining": 55.00,
+  "alerts": ["daily_limit"],
+  "play_sound": true
+}
+```
+When the weekly budget is reached (even if today still has room):
+```json
+{
+  "notification": "You've reached this week's limit · −$3.00 over. Check your bank app.",
+  "today_remaining": 4.00,
+  "week_remaining": -3.00,
+  "alerts": ["weekly_limit"],
   "play_sound": true
 }
 ```
 - `play_sound` follows the user's `sound_on` setting.
-- If no budget is set, the notification still says what was spent: "You spent $6.00 at Starbucks."
+- If only one budget is on, the notification mentions just that one. If none is set, it still says what was spent: "You spent $6.00 at Starbucks."
 
 ---
 
@@ -163,8 +188,3 @@ Every error uses the same shape, so the app can show friendly messages:
 | `404` | Not found |
 | `409` | Conflict (e.g., email already used) |
 | `500` | Server error |
-
----
-
-## Open question
-- **When both daily and weekly budgets are on, which one drives the jar and the notification?** `/api/status` returns both, so the app can decide. Proposed: whichever has the lower percentage left.

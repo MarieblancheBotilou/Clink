@@ -14,7 +14,7 @@ Each table has a bold header row labeling its columns: **Data type**, **Column n
 |---|---|---|
 | **User** | A person using Clink | name, email, password (hashed), shortcut token, time zone |
 | **Settings** | That user's preferences | notifications on/off, clink sound on/off, alert level (%), reduce motion |
-| **Budget** | A spending cap | period (daily or weekly), amount, on/off |
+| **Budget** | A spending cap | period (daily or weekly), day of week (daily only), amount, on/off |
 | **Purchase** | One Apple Pay transaction | amount, merchant, date & time |
 
 ## Relationships
@@ -22,7 +22,7 @@ Each table has a bold header row labeling its columns: **Data type**, **Column n
 | Relationship | Type | Meaning |
 |---|---|---|
 | User → Settings | **One-to-one** | Every user has exactly one set of settings. |
-| User → Budget | **One-to-many (max 2)** | A user can have a daily budget, a weekly budget, both, or neither, but only one of each period. |
+| User → Budget | **One-to-many (max 8)** | One weekly budget (the overall limit) plus up to seven daily caps, one per day of the week, which must fit inside the weekly budget. |
 | User → Purchase | **One-to-many** | A user makes many purchases; each purchase belongs to one user. |
 
 ## Key terms
@@ -35,6 +35,3 @@ Each table has a bold header row labeling its columns: **Data type**, **Column n
 - **No separate Alerts table.** Alerts ("Heads up," "You've reached your limit") are calculated from Purchases and Budget when they happen. Purchase history is the record users look back on.
 - **No "remaining" column.** What's left is calculated (budget amount − total of purchases in the period) rather than stored, so it can never get out of sync.
 - **Shortcut token** is unique per user. The Apple Pay shortcut sends it with each purchase so the server knows whose purchase it is.
-
-## Open question
-- If both a daily and a weekly budget are on, which one does the jar show? (Option: whichever the user is closer to running out of.)

@@ -27,15 +27,27 @@ CREATE TABLE settings (
 );
 
 CREATE TABLE budgets (
-  id          SERIAL         PRIMARY KEY,
-  user_id     INTEGER        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  period      VARCHAR(10)    NOT NULL CHECK (period IN ('daily', 'weekly')),
-  amount      DECIMAL(10,2)  NOT NULL CHECK (amount > 0),
-  is_active   BOOLEAN        NOT NULL DEFAULT TRUE,
-  created_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (user_id, period)                                -- max one daily + one weekly
+  id           SERIAL         PRIMARY KEY,
+  user_id      INTEGER        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  period       VARCHAR(10)    NOT NULL CHECK (period IN ('daily', 'weekly')),
+  day_of_week  SMALLINT,                                  -- 0 = Monday ... 6 = Sunday; NULL for weekly
+  amount       DECIMAL(10,2)  NOT NULL CHECK (amount > 0),
+  is_active    BOOLEAN        NOT NULL DEFAULT TRUE,
+  created_at   TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at   TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  -- daily rows need a day; the weekly row must not have one
+  CHECK (
+    (period = 'weekly' AND day_of_week IS NULL) OR
+    (period = 'daily'  AND day_of_week IS NOT NULL AND day_of_week BETWEEN 0 AND 6)
+  ),
+  UNIQUE (user_id, period, day_of_week)                   -- one cap per day of the week
 );
+
+-- Only one weekly budget per user (UNIQUE above can't catch this, because NULLs never count as equal)
+CREATE UNIQUE INDEX one_weekly_budget_per_user ON budgets (user_id) WHERE period = 'weekly';
+
+-- Rule enforced in the app (it compares several rows, so a CHECK can't do it):
+-- when both are active, the sum of the 7 daily caps must be <= the weekly amount.
 
 CREATE TABLE purchases (
   id            SERIAL         PRIMARY KEY,

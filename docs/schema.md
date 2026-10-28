@@ -48,11 +48,20 @@ The runnable SQL version is in [`schema.sql`](schema.sql). In the app, these tab
 | `id` | INTEGER | ✓ | auto-increment | **PRIMARY KEY** |
 | `user_id` | INTEGER | ✓ | | **FOREIGN KEY** → `users.id` · delete with user |
 | `period` | VARCHAR(10) | ✓ | | **CHECK** is `'daily'` or `'weekly'` |
+| `day_of_week` | SMALLINT | daily only | | 0 = Monday … 6 = Sunday. **CHECK:** required for daily rows (0–6), must be empty for the weekly row |
 | `amount` | DECIMAL(10,2) | ✓ | | **CHECK** greater than 0 |
 | `is_active` | BOOLEAN | ✓ | `true` | The on/off switch on the Set cap screen |
 | `created_at` / `updated_at` | TIMESTAMP | ✓ | now | |
 
-**Table rule:** `UNIQUE (user_id, period)`: a user can have at most **one daily** and **one weekly** budget (the "max 2" from the ER diagram).
+**How budgets are stored**
+- **Weekly budget:** one row with `period = 'weekly'` and no day. This is the overall limit.
+- **Daily caps:** seven rows, one per day of the week (`day_of_week` 0–6). "Same amount every day" just means all seven rows have the same amount; "different per day" means they differ.
+- So a user has at most **8 budget rows**: 7 daily + 1 weekly.
+
+**Table rules**
+- `UNIQUE (user_id, period, day_of_week)`: one cap per day of the week.
+- A partial unique index (`WHERE period = 'weekly'`): only one weekly budget per user.
+- **Enforced in the app:** when both are active, the 7 daily caps can't add up to more than the weekly budget. This compares several rows at once, so a simple database `CHECK` can't do it; the backend validates it before saving.
 
 ## `purchases`
 | Column | Type | Required | Default | Rules |
@@ -73,6 +82,7 @@ The runnable SQL version is in [`schema.sql`](schema.sql). In the app, these tab
 - **No `remaining` column:** what's left is always calculated (budget amount − sum of purchases in the period), so it can never drift out of sync.
 - **Times stored in UTC, user's time zone stored separately:** a purchase at 11:30 PM in College Station is still "today" for that user even though it's the next day in UTC. The server converts using `users.timezone`.
 - **Weeks start on Monday** (assumption for MVP; could become a setting later).
+- **No carry-over:** unspent daily money doesn't roll into tomorrow; it stays in the weekly pool, which already accounts for it.
 - **Settings row created at sign-up** with the defaults above, so every user always has exactly one.
 
 ## Database engine

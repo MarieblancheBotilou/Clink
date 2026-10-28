@@ -33,6 +33,7 @@ digraph ER {
     <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">int</TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">id</TD><TD BGCOLOR="#f6ea8f">PK</TD></TR>
     <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">period <FONT COLOR="#6b6b6b">(daily / weekly)</FONT></TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">day_of_week <FONT COLOR="#6b6b6b">(0 = Mon … 6 = Sun)</FONT></TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">decimal</TD><TD ALIGN="LEFT">amount</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">is_active</TD><TD></TD></TR>
   </TABLE>>];
@@ -48,7 +49,7 @@ digraph ER {
   </TABLE>>];
 
   User -> Settings [arrowtail=teetee, arrowhead=teetee, label="  has (exactly one)"];
-  User -> Budget   [arrowtail=teetee, arrowhead=crowodot, label="  sets (up to 2)"];
+  User -> Budget   [arrowtail=teetee, arrowhead=crowodot, label="  sets (1 weekly + up to 7 daily)"];
   User -> Purchase [arrowtail=teetee, arrowhead=crowodot, label="  makes (many)"];
   { rank=same; Settings; Budget; Purchase; }
 

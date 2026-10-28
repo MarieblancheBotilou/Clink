@@ -4,6 +4,30 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-28 · 11:33 AM CT: Weekly budget is the overall limit; daily caps divide it
+
+**Decision**
+- The **weekly budget is the overall limit**. Daily caps divide it up.
+- Daily caps can be **the same every day** or **different per day** (e.g., lower on weekdays, higher on weekends).
+- The daily caps must **fit inside the weekly budget**; the app won't save them if they add up to more.
+- **Both trigger notifications:** reaching today's cap sends a daily-limit notification; reaching the weekly budget sends a weekly-limit notification, even if today still has room.
+- Every clink shows both: "You spent $6 at Starbucks · $14 left today · $80 left this week."
+- **The jar shows today's budget**, with the weekly amount left shown smaller underneath.
+- **No carry-over:** unspent daily money stays in the weekly pool instead of rolling into tomorrow.
+
+**Why**
+- People plan money by the week (allowance, paycheck), but spend it day by day. The weekly budget keeps the big picture; daily caps make it actionable in the moment.
+- Different caps per day match real life: weekends usually cost more than weekdays.
+- The jar shows today because that's what the user can act on right now.
+- Keeping leftovers in the weekly pool is simpler to understand and calculate, and the weekly total already reflects them.
+
+**Data model change**
+- Budget gets a `day_of_week` column (0 = Monday … 6 = Sunday). A user has up to 8 budget rows: 1 weekly + 7 daily.
+
+**Resolves** the open question: which budget drives the jar and the notification when both are on.
+
+---
+
 ## 2026-10-28 · 11:07 AM CT: Database: PostgreSQL
 
 **Decision**

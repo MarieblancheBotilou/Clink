@@ -39,13 +39,16 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 - Passwords are stored hashed, never as plain text.
 - *(Later: Sign in with Apple / Google.)*
 
-### US-2: Set a daily cap
-**As a** tap-to-pay user, **I want to** set a daily spending cap, **so that** I have a clear limit to stay within.
+### US-2: Set my weekly and daily budgets
+**As a** tap-to-pay user, **I want to** set a weekly budget and divide it into daily caps, **so that** I have a clear limit for today that still fits my plan for the week.
 
 **Acceptance criteria**
-- Given I'm on the setup screen, when I enter an amount above $0 and save, then it becomes my daily cap.
-- Given I enter $0, a negative number, or letters, when I try to save, then I see an error and nothing is saved.
-- Given I already have a cap, when I change it, then the new amount shows on my home screen.
+- Given I'm on the Set budget screen, when I enter a weekly amount above $0 and save, then it becomes my weekly budget (my overall limit).
+- Given I turn on daily caps, then I can choose **the same amount every day** or **a different amount for each day** (e.g., $15 Mon–Thu, $35 Fri–Sun).
+- Given my daily caps add up to more than my weekly budget, when I try to save, then I see an error (e.g., "Your daily caps add up to $175, which is more than your $150 weekly budget") and nothing is saved.
+- Given I enter $0, a negative number, or letters, then I see an error and nothing is saved.
+- Either budget can be turned on or off on its own.
+- Unspent daily money is **not** carried to the next day; it simply stays in the weekly pool.
 
 ### US-3: Set up automatic tracking
 **As a** tap-to-pay user, **I want to** set up the Clink shortcut once, **so that** my Apple Pay purchases are tracked automatically without me entering anything.
@@ -59,17 +62,19 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 **As a** tap-to-pay user, **I want to** be notified of what I just spent and how much of my cap is left every time I pay, **so that** I never spend blindly with Apple Pay.
 
 **Acceptance criteria**
-- Given I pay with Apple Pay, then within seconds I hear the *clink* and get a notification: "You spent $X at [merchant] · $Y left."
+- Given I pay with Apple Pay, then within seconds I hear the *clink* and get a notification: "You spent $X at [merchant] · $Y left today · $Z left this week."
 - This happens for **every** purchase, not just near the limit.
-- Remaining = cap − total of today's purchases.
-- The jar on the home screen updates to match.
+- Left today = today's cap − today's purchases. Left this week = weekly budget − this week's purchases (weeks start Monday).
+- If only one budget is on, the notification shows just that one.
+- The jar on the home screen shows **today's** budget and updates to match; the weekly amount left is shown smaller underneath.
 
 ### US-5: Get alerted at my limit
 **As a** tap-to-pay user, **I want to** be alerted when I'm close to or have reached my cap, **so that** I can stop and check my bank app before overspending.
 
 **Acceptance criteria**
-- Given a purchase brings me to 75% or more of my cap, then I see a "Heads up: $Y left" message.
-- Given a purchase brings me to 100% or more of my cap, then I see a clear "You've reached your limit" alert with a prompt to open my bank app.
+- Given a purchase brings me to my alert level (default 75%) of **today's** cap or my **weekly** budget, then I see a "Heads up" message saying which one.
+- Given a purchase reaches 100% of today's cap, then I see "You've reached today's limit," with a prompt to open my bank app.
+- Given a purchase reaches 100% of my weekly budget, then I see "You've reached this week's limit," even if today's cap still has room.
 - Going over shows a negative amount with a minus sign and words (e.g., "−$5.00 over"), not color alone.
 - Alerts use supportive wording, not judgmental wording.
 
@@ -77,7 +82,7 @@ Young adults and college students who pay mostly with Apple Pay or other tap-to-
 **As a** tap-to-pay user, **I want to** see my past purchases by day, **so that** I can understand my spending over time.
 
 **Acceptance criteria**
-- Given I open History, then I see each day with total spent vs. cap, newest first.
+- Given I open History, then I can switch between **daily** and **weekly** views, each showing total spent vs. budget, newest first.
 - Given I tap a day, then I see that day's purchases (amount, merchant, time).
 
 ---
@@ -89,7 +94,6 @@ Reviewers can't tap a real phone, so a **developer-only "simulate a purchase"** 
 
 ## Out of scope for MVP (roadmap)
 - Sign in with Apple / Google
-- Weekly cap option (in addition to daily)
 - Heads-up alert when no cap is set but spending passes a significant amount
 - Vibration patterns and custom notification settings
 - *(Optional, maybe)* Plaid bank linking to catch purchases the shortcut misses and correct final amounts (e.g., tips). Not Apple Pay–specific, so not core.
@@ -107,7 +111,7 @@ Reviewers can't tap a real phone, so a **developer-only "simulate a purchase"** 
 | Screen | Stories |
 |---|---|
 | Sign-up options / Email sign-up / Log in | US-1 |
-| Set cap | US-2 |
+| Set budget (weekly + daily) | US-2 |
 | Set up the Clink shortcut | US-3 |
 | Notification (lock screen / banner) | US-4, US-5 |
 | Home (jar) | US-4, US-5 |
