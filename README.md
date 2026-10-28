@@ -22,6 +22,13 @@ Tap-to-pay makes paying so effortless that spending stops registering. Many peop
 
 No bank login required. Clink only sees the amount and merchant of each Apple Pay purchase.
 
+## See it work
+Three simulated Apple Pay purchases against a $20/day, $140/week budget. Each one returns the notification text, and the third triggers a **heads-up** as today's cap runs low:
+
+<p align="center">
+  <img src="docs/screenshots/clink-simulator.png" alt="PowerShell showing three simulated $6 Starbucks purchases. The notifications read $14, then $8, then 'Heads up' with $2 left today." width="560">
+</p>
+
 ## Status: 🚧 In development
 | Phase | Status |
 |---|---|

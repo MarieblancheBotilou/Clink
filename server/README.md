@@ -61,3 +61,7 @@ Invoke-RestMethod -Method Put -Uri http://localhost:3000/api/budgets -Headers $a
 # 3. Simulate an Apple Pay purchase and see the notification
 Invoke-RestMethod -Method Post -Uri http://localhost:3000/api/dev/simulate-purchase -Headers $auth -ContentType 'application/json' -Body '{"amount":6,"merchant":"Starbucks"}'
 ```
+
+Run step 3 a few times and watch what's left go down, then the **heads-up** appear:
+
+![Clink simulator output](../docs/screenshots/clink-simulator.png)
