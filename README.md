@@ -30,9 +30,9 @@ No bank login required. Clink only sees the amount and merchant of each Apple Pa
 | Paper wireframes | ✅ Done |
 | ER diagram | ✅ Done |
 | Relational schema | ✅ Done |
-| API design | 🔄 In progress |
+| API design | ✅ Done |
 | Figma designs | ⏳ Next |
-| Backend (Node.js, Express, Sequelize, PostgreSQL) | ⏳ Next |
+| Backend (Node.js, Express, Sequelize, PostgreSQL) | 🔄 Next up |
 | Frontend (React) | ⏳ Planned |
 | Shortcut integration & deployment | ⏳ Planned |
 
@@ -49,6 +49,7 @@ Every step is documented in [`docs/`](docs/):
 - [User stories](docs/user-stories.md): MVP scope, acceptance criteria, known limitations
 - [ER diagram](docs/er-diagram.md): what Clink stores and how it connects
 - [Relational schema](docs/schema.md): exact tables, types, and rules ([SQL](docs/schema.sql))
+- [API design](docs/api.md): every endpoint, its inputs, and its responses
 - [Decision log](docs/decision-log.md): key product decisions and the reasoning behind them
 - [Wireframes](docs/wireframes/): paper sketches and jar artwork
 
