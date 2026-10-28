@@ -4,47 +4,7 @@ An entity-relationship (ER) diagram shows **what Clink stores** and **how those 
 
 ![Clink ER diagram](diagrams/er-diagram.png)
 
-<details>
-<summary>Diagram source (Mermaid, renders on GitHub)</summary>
-
-```mermaid
-erDiagram
-    USER ||--|| SETTINGS : "has"
-    USER ||--o{ BUDGET : "sets (up to 2)"
-    USER ||--o{ PURCHASE : "makes"
-
-    USER {
-        int id PK
-        string name
-        string email UK
-        string password_hash
-        string shortcut_token UK
-        datetime created_at
-    }
-    SETTINGS {
-        int id PK
-        int user_id FK
-        boolean notifications_on
-        boolean sound_on
-        int alert_threshold_pct
-        boolean reduce_motion
-    }
-    BUDGET {
-        int id PK
-        int user_id FK
-        string period "daily or weekly"
-        decimal amount
-        boolean is_active
-    }
-    PURCHASE {
-        int id PK
-        int user_id FK
-        decimal amount
-        string merchant
-        datetime purchased_at
-    }
-```
-</details>
+Primary keys are **bolded and highlighted in yellow**. The key at the bottom of the image explains each label, data type, and line symbol. *(Diagram source: [`diagrams/er-diagram.dot`](diagrams/er-diagram.dot), rendered with Graphviz.)*
 
 ---
 

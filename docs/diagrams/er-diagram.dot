@@ -1,0 +1,63 @@
+digraph ER {
+  graph [fontname="Helvetica", bgcolor="white", nodesep=0.7, ranksep=0.9, pad=0.4, newrank=true];
+  node  [shape=plain, fontname="Helvetica", fontsize=12];
+  edge  [fontname="Helvetica", fontsize=11, color="#4a5544", penwidth=1.4, dir=both, arrowsize=1.1];
+
+  // colors: sage header, yellow PK row
+  User [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
+    <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>USER</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">name</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">email</TD><TD>UK</TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">password_hash</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">shortcut_token</TD><TD>UK</TD></TR>
+    <TR><TD ALIGN="LEFT">datetime</TD><TD ALIGN="LEFT">created_at</TD><TD></TD></TR>
+  </TABLE>>];
+
+  Settings [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
+    <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>SETTINGS</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
+    <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">notifications_on</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">sound_on</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">alert_threshold_pct</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">reduce_motion</TD><TD></TD></TR>
+  </TABLE>>];
+
+  Budget [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
+    <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>BUDGET</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">period <FONT COLOR="#6b6b6b">(daily / weekly)</FONT></TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">decimal</TD><TD ALIGN="LEFT">amount</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">is_active</TD><TD></TD></TR>
+  </TABLE>>];
+
+  Purchase [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
+    <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>PURCHASE</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
+    <TR><TD ALIGN="LEFT">decimal</TD><TD ALIGN="LEFT">amount</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">merchant</TD><TD></TD></TR>
+    <TR><TD ALIGN="LEFT">datetime</TD><TD ALIGN="LEFT">purchased_at</TD><TD></TD></TR>
+  </TABLE>>];
+
+  User -> Settings [arrowtail=teetee, arrowhead=teetee, label="  has (exactly one)"];
+  User -> Budget   [arrowtail=teetee, arrowhead=crowodot, label="  sets (up to 2)"];
+  User -> Purchase [arrowtail=teetee, arrowhead=crowodot, label="  makes (many)"];
+  { rank=same; Settings; Budget; Purchase; }
+
+  // ---------- Legend ----------
+  subgraph cluster_key {
+    label=<<B>KEY</B>>; fontsize=14; style="rounded"; color="#9aa592"; margin=14;
+    keys [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4">
+      <TR><TD ALIGN="LEFT" COLSPAN="2"><B>Keys</B></TD><TD WIDTH="30"></TD><TD ALIGN="LEFT" COLSPAN="2"><B>Data types</B></TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f6ea8f"><B>PK</B></TD><TD ALIGN="LEFT">Primary key: the row's unique ID (e.g., Purchase #42)</TD><TD></TD><TD ALIGN="LEFT"><B>int</B></TD><TD ALIGN="LEFT">whole number (1, 2, 42)</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">Foreign key: points to another table's PK (user_id = whose row it is)</TD><TD></TD><TD ALIGN="LEFT"><B>string</B></TD><TD ALIGN="LEFT">text ("Starbucks")</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>UK</B></TD><TD ALIGN="LEFT">Unique key: no two rows can share it (one account per email)</TD><TD></TD><TD ALIGN="LEFT"><B>decimal</B></TD><TD ALIGN="LEFT">number with cents (6.50)</TD></TR>
+      <TR><TD></TD><TD></TD><TD></TD><TD ALIGN="LEFT"><B>boolean</B></TD><TD ALIGN="LEFT">true / false (on / off)</TD></TR>
+      <TR><TD></TD><TD></TD><TD></TD><TD ALIGN="LEFT"><B>datetime</B></TD><TD ALIGN="LEFT">date + time (Oct 28, 10:55 AM)</TD></TR>
+    </TABLE>>];
+  }
+  Budget -> keys [style=invis, dir=none];
+}
