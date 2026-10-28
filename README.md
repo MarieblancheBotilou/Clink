@@ -32,11 +32,11 @@ No bank login required. Clink only sees the amount and merchant of each Apple Pa
 | Relational schema | ✅ Done |
 | API design | ✅ Done |
 | Figma designs | ⏳ Next |
-| Backend (Node.js, Express, Sequelize, PostgreSQL) | 🔄 Next up |
+| Backend (Node.js, Express, Sequelize, PostgreSQL) | 🔄 In progress: database, sign-up, login done ([details](server/README.md)) |
 | Frontend (React) | ⏳ Planned |
 | Shortcut integration & deployment | ⏳ Planned |
 
-## Tech stack (planned)
+## Tech stack
 - **Frontend:** React
 - **Backend:** Node.js, Express
 - **Database:** PostgreSQL with Sequelize ORM
