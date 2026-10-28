@@ -4,7 +4,7 @@ An entity-relationship (ER) diagram shows **what Clink stores** and **how those 
 
 ![Clink ER diagram](diagrams/er-diagram.png)
 
-Primary keys are **bolded and highlighted in yellow**. The key at the bottom of the image explains each label, data type, and line symbol. *(Diagram source: [`diagrams/er-diagram.dot`](diagrams/er-diagram.dot), rendered with Graphviz.)*
+Each table has a bold header row labeling its columns: **Data type**, **Column name**, and **Key**. Primary-key rows are highlighted in yellow. The key at the bottom of the image explains each label, data type, and line symbol. *(Diagram source: [`diagrams/er-diagram.dot`](diagrams/er-diagram.dot), rendered with Graphviz.)*
 
 ---
 

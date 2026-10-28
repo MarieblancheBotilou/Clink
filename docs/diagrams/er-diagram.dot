@@ -6,7 +6,8 @@ digraph ER {
   // colors: sage header, yellow PK row
   User [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
     <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>USER</B></FONT></TD></TR>
-    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Data type</B></TD><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Column name</B></TD><TD BGCOLOR="#e4e8e1"><B>Key</B></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">int</TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">id</TD><TD BGCOLOR="#f6ea8f">PK</TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">name</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">email</TD><TD>UK</TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">password_hash</TD><TD></TD></TR>
@@ -16,7 +17,8 @@ digraph ER {
 
   Settings [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
     <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>SETTINGS</B></FONT></TD></TR>
-    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Data type</B></TD><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Column name</B></TD><TD BGCOLOR="#e4e8e1"><B>Key</B></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">int</TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">id</TD><TD BGCOLOR="#f6ea8f">PK</TD></TR>
     <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
     <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">notifications_on</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">boolean</TD><TD ALIGN="LEFT">sound_on</TD><TD></TD></TR>
@@ -26,7 +28,8 @@ digraph ER {
 
   Budget [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
     <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>BUDGET</B></FONT></TD></TR>
-    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Data type</B></TD><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Column name</B></TD><TD BGCOLOR="#e4e8e1"><B>Key</B></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">int</TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">id</TD><TD BGCOLOR="#f6ea8f">PK</TD></TR>
     <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">period <FONT COLOR="#6b6b6b">(daily / weekly)</FONT></TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">decimal</TD><TD ALIGN="LEFT">amount</TD><TD></TD></TR>
@@ -35,7 +38,8 @@ digraph ER {
 
   Purchase [label=<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#5f6b58">
     <TR><TD COLSPAN="3" BGCOLOR="#7d8b74"><FONT COLOR="white" POINT-SIZE="14"><B>PURCHASE</B></FONT></TD></TR>
-    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>int</B></TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT"><B>id</B></TD><TD BGCOLOR="#f6ea8f"><B>PK</B></TD></TR>
+    <TR><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Data type</B></TD><TD BGCOLOR="#e4e8e1" ALIGN="LEFT"><B>Column name</B></TD><TD BGCOLOR="#e4e8e1"><B>Key</B></TD></TR>
+    <TR><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">int</TD><TD BGCOLOR="#f6ea8f" ALIGN="LEFT">id</TD><TD BGCOLOR="#f6ea8f">PK</TD></TR>
     <TR><TD ALIGN="LEFT">int</TD><TD ALIGN="LEFT">user_id</TD><TD>FK</TD></TR>
     <TR><TD ALIGN="LEFT">decimal</TD><TD ALIGN="LEFT">amount</TD><TD></TD></TR>
     <TR><TD ALIGN="LEFT">string</TD><TD ALIGN="LEFT">merchant</TD><TD></TD></TR>
