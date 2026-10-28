@@ -89,16 +89,18 @@ Saves the weekly budget and the daily caps together, so the "daily caps must fit
 **Response `200 OK`**
 ```json
 {
-  "today":  { "cap": 20.00,  "spent": 14.00, "remaining": 6.00,  "percent_used": 70, "jar_stage": 2 },
-  "week":   { "budget": 150.00, "spent": 70.00, "remaining": 80.00, "percent_used": 47 },
+  "today": { "cap": 20, "spent": 14, "remaining": 6, "percent_used": 70, "jar_stage": 2 },
+  "week":  { "budget": 140, "spent": 70, "remaining": 70, "percent_used": 50, "jar_stage": 3 },
+  "spent_today": 14,
+  "spent_this_week": 70,
+  "jar": "today",
   "alerts": []
 }
 ```
-- **The jar shows `today`.** The week's remaining amount is shown smaller underneath.
+- **The jar shows `today`.** If daily caps are off, `jar` is `"week"`; if no budget is on, it's `null`.
 - `remaining` is calculated, never stored, and can go negative when over.
 - `jar_stage`: 6 = full … 1 = almost empty, 0 = empty/over (matches the six jar drawings).
 - `alerts` can include `"daily_heads_up"`, `"daily_limit"`, `"weekly_heads_up"`, `"weekly_limit"`.
-- If a budget is off, its object is `null`. If daily caps are off, the jar shows the week instead.
 - Unspent daily money is **not** carried over; it stays in the weekly pool.
 
 ---
@@ -121,33 +123,23 @@ Called by the Apple Pay shortcut seconds after a tap.
 **Response `201 Created`** (the shortcut turns this into the notification and plays the clink)
 ```json
 {
-  "notification": "You spent $6.00 at Starbucks · $14.00 left today · $80.00 left this week",
-  "today_remaining": 14.00,
-  "week_remaining": 80.00,
+  "purchase": { "id": 42, "amount": 6, "merchant": "Starbucks", "purchased_at": "2026-10-28T15:42:10.000Z" },
+  "notification": "You spent $6.00 at Starbucks · $14.00 left today · $134.00 left this week",
+  "today_remaining": 14,
+  "week_remaining": 134,
   "alerts": [],
+  "show_notification": true,
   "play_sound": true
 }
 ```
-When today's cap is reached:
-```json
-{
-  "notification": "You've reached today's limit · −$5.00 over · $55.00 left this week. Check your bank app.",
-  "today_remaining": -5.00,
-  "week_remaining": 55.00,
-  "alerts": ["daily_limit"],
-  "play_sound": true
-}
-```
-When the weekly budget is reached (even if today still has room):
-```json
-{
-  "notification": "You've reached this week's limit · −$3.00 over. Check your bank app.",
-  "today_remaining": 4.00,
-  "week_remaining": -3.00,
-  "alerts": ["weekly_limit"],
-  "play_sound": true
-}
-```
+Other notification wordings:
+- **Heads up** (at the alert level, 75% by default): `Heads up: You spent $16.00 at Target · $4.00 left today · $124.00 left this week`
+- **Today's limit:** `You've reached today's limit · You spent $10.00 at Chipotle · −$5.00 over today · $115.00 left this week. Check your bank app.`
+- **This week's limit:** `You've reached this week's limit · You spent $145.00 · −$5.00 over this week. Check your bank app.`
+
+Notes:
+- `amount` can be a number (`6.5`) or text the way Apple Shortcuts sends it (`"$6.50"`).
+- `purchased_at` is optional (defaults to now) and can't be in the future.
 - `play_sound` follows the user's `sound_on` setting.
 - If only one budget is on, the notification mentions just that one. If none is set, it still says what was spent: "You spent $6.00 at Starbucks."
 
