@@ -4,6 +4,24 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-27 · 9:23 PM CT: Tap the jar's $ label to edit the budget; four-tab navigation
+
+**Decision**
+- Tapping the **$ label on the jar** (Home screen) opens the Budget screen directly, so users can change their cap without hunting for it.
+- Bottom tab bar with four tabs: **Home** (jar) · **History** (daily & weekly Apple Pay reports) · **Budget** (daily or weekly cap) · **Settings**.
+- Remove the ☰ menu icon; Settings lives in the tab bar instead.
+
+**Why**
+- The $ amount is the most prominent thing on Home, and people naturally tap the number they want to change. Making it a shortcut matches that instinct.
+- One place for navigation (the tab bar, within thumb reach) is simpler than splitting it between a menu icon and tabs.
+- A Home tab gives users a one-tap way back to the jar from anywhere.
+
+**Accessibility notes**
+- The $ label needs a clear accessible name for screen readers (e.g., "$10.00 left of $40. Tap to edit budget") and a large enough tap target.
+- The Budget tab remains the main way to edit, since a tappable label isn't obvious to everyone.
+
+---
+
 ## 2026-10-27 · 9:16 PM CT: Drop Plaid; track Apple Pay purchases only, via the shortcut
 
 **Decision**
