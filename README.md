@@ -32,14 +32,14 @@ No bank login required. Clink only sees the amount and merchant of each Apple Pa
 | Relational schema | ✅ Done |
 | API design | 🔄 In progress |
 | Figma designs | ⏳ Next |
-| Backend (Node.js, Express, Sequelize, SQL) | ⏳ Next |
+| Backend (Node.js, Express, Sequelize, PostgreSQL) | ⏳ Next |
 | Frontend (React) | ⏳ Planned |
 | Shortcut integration & deployment | ⏳ Planned |
 
 ## Tech stack (planned)
 - **Frontend:** React
 - **Backend:** Node.js, Express
-- **Database:** SQL with Sequelize ORM
+- **Database:** PostgreSQL with Sequelize ORM
 - **Integration:** Apple Shortcuts "Transaction" automation → Clink API
 - **Design:** Paper sketches → Figma
 

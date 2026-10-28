@@ -4,6 +4,21 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-28 · 11:07 AM CT: Database: PostgreSQL
+
+**Decision**
+- Use **PostgreSQL**, accessed through the Sequelize ORM.
+
+**Why**
+- Free both locally and online, with easy free hosting (e.g., Supabase, Neon) so reviewers can try a live demo.
+- Same database as the Internship Tracker port (Supabase), so I learn one database deeply.
+- Because Sequelize is database-agnostic, the models and queries carry over to Microsoft SQL Server with only connection changes. That's relevant for roles using MSSQL.
+
+**Trade-off**
+- Not the exact database some job postings list (MSSQL), but the transferable skills (SQL, Sequelize, schema design) are the same.
+
+---
+
 ## 2026-10-28 · 11:10 AM CT: Relational schema: UTC times + user time zone; database-enforced rules
 
 **Decision**
