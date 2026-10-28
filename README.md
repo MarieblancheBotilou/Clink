@@ -28,7 +28,8 @@ No bank login required. Clink only sees the amount and merchant of each Apple Pa
 | Problem definition & user journey | ✅ Done |
 | User stories & MVP scope | ✅ Done |
 | Paper wireframes | ✅ Done |
-| ER diagram, schema, API design | 🔄 In progress |
+| ER diagram | ✅ Done |
+| Relational schema & API design | 🔄 In progress |
 | Figma designs | ⏳ Next |
 | Backend (Node.js, Express, Sequelize, SQL) | ⏳ Next |
 | Frontend (React) | ⏳ Planned |
@@ -45,6 +46,7 @@ No bank login required. Clink only sees the amount and merchant of each Apple Pa
 Every step is documented in [`docs/`](docs/):
 - [User journey](docs/user-journey.md): the experience before and after Clink
 - [User stories](docs/user-stories.md): MVP scope, acceptance criteria, known limitations
+- [ER diagram](docs/er-diagram.md): what Clink stores and how it connects
 - [Decision log](docs/decision-log.md): key product decisions and the reasoning behind them
 - [Wireframes](docs/wireframes/): paper sketches and jar artwork
 

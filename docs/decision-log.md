@@ -4,6 +4,19 @@ A running record of key product and technical decisions: what I decided, why, an
 
 ---
 
+## 2026-10-28 · 11:00 AM CT: Data model: Settings gets its own table; no Alerts table
+
+**Decision**
+- Four entities: **User**, **Settings**, **Budget**, **Purchase** (see [`er-diagram.md`](er-diagram.md)).
+- **Settings** is its own table (one-to-one with User) instead of columns on User.
+- Alerts are **not** stored as their own records.
+
+**Why**
+- Keeping settings separate keeps User focused on identity and login, and lets settings grow later without changing User.
+- Purchase history already shows users what they spent and when. Alerts are moments in time, calculated from purchases and budget as they happen, so storing them would duplicate information.
+
+---
+
 ## 2026-10-27 · 9:23 PM CT: Tap the jar's $ label to edit the budget; four-tab navigation
 
 **Decision**
