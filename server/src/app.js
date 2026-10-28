@@ -9,6 +9,8 @@ const budgetRoutes = require('./routes/budgets');
 const statusRoutes = require('./routes/status');
 const purchaseRoutes = require('./routes/purchases');
 const shortcutRoutes = require('./routes/shortcut');
+const historyRoutes = require('./routes/history');
+const settingsRoutes = require('./routes/settings');
 const devRoutes = require('./routes/dev');
 const AppError = require('./utils/AppError');
 const errorHandler = require('./middleware/errorHandler');
@@ -30,6 +32,8 @@ app.use('/api/budgets', budgetRoutes);
 app.use('/api/status', statusRoutes);
 app.use('/api/purchases', purchaseRoutes);
 app.use('/api/shortcut', shortcutRoutes);
+app.use('/api/history', historyRoutes);
+app.use('/api/settings', settingsRoutes);
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/dev', devRoutes); // demo helper, off in production
 }

@@ -38,9 +38,9 @@ Three simulated Apple Pay purchases against a $20/day, $140/week budget. Each on
 | ER diagram | ✅ Done |
 | Relational schema | ✅ Done |
 | API design | ✅ Done |
-| Figma designs | ⏳ Next |
-| Backend (Node.js, Express, Sequelize, PostgreSQL) | 🔄 In progress: accounts, budgets, the clink, and Home status done; 45 tests ([details](server/README.md)) |
-| Frontend (React) | ⏳ Planned |
+| Figma designs | 🔄 Next |
+| Backend (Node.js, Express, Sequelize, PostgreSQL) | ✅ Done: all MVP endpoints, 67 tests ([details](server/README.md)) |
+| Frontend (React) | ⏳ Next |
 | Shortcut integration & deployment | ⏳ Planned |
 
 ## Tech stack

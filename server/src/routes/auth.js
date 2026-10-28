@@ -4,20 +4,12 @@ const bcrypt = require('bcryptjs');
 const { sequelize, User, Settings } = require('../models');
 const AppError = require('../utils/AppError');
 const { createLoginToken, createShortcutToken } = require('../utils/tokens');
+const { isValidTimezone } = require('../utils/validation');
 
 const router = express.Router();
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSWORD_LENGTH = 8;
-
-function isValidTimezone(tz) {
-  try {
-    Intl.DateTimeFormat(undefined, { timeZone: tz });
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {

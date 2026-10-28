@@ -35,18 +35,21 @@ server/
 ```
 
 ## Progress
-| Endpoint | Status |
-|---|---|
-| `GET /api/health` | ✅ |
-| `POST /api/auth/signup` · `POST /api/auth/login` · `GET /api/me` | ✅ |
-| `GET /api/budgets` · `PUT /api/budgets` (weekly + daily caps) | ✅ |
-| `GET /api/status` (Home screen / jar) | ✅ |
-| `POST /api/purchases` (**the clink**) | ✅ |
-| `GET /api/shortcut` · `POST /api/shortcut/regenerate` · `POST /api/shortcut/test` | ✅ |
-| `POST /api/dev/simulate-purchase` (development only) | ✅ |
-| History, settings, account updates/deletion | ⏳ Next |
+**All MVP endpoints from [`docs/api.md`](../docs/api.md) are built.**
 
-**45 automated tests** cover sign-up and login, budget rules (daily caps must fit inside the weekly budget), notification wording, alerts, time zones (a late-night purchase counts toward the user's own day), and shortcut security.
+| Area | Endpoints |
+|---|---|
+| Health | `GET /api/health` |
+| Accounts | `POST /api/auth/signup` · `POST /api/auth/login` · `GET` / `PATCH` / `DELETE /api/me` |
+| Budgets | `GET` / `PUT /api/budgets` (weekly budget + daily caps) |
+| Home screen | `GET /api/status` (today, this week, jar stage, alerts) |
+| **The clink** | `POST /api/purchases` |
+| History | `GET /api/history` (daily / weekly) · `GET /api/purchases?date=` |
+| Settings | `GET` / `PATCH /api/settings` |
+| Shortcut setup | `GET /api/shortcut` · `POST /api/shortcut/regenerate` · `POST /api/shortcut/test` |
+| Development only | `POST /api/dev/simulate-purchase` |
+
+**67 automated tests** cover sign-up and login, budget rules (daily caps must fit inside the weekly budget), notification wording, alerts, history grouping, settings, account deletion (removes all data), time zones (a late-night purchase counts toward the user's own day), and security (users only ever see their own data).
 
 ## Try the clink yourself
 With the server running (`npm run dev`), in a second PowerShell window:

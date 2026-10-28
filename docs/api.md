@@ -25,7 +25,7 @@ The API is the list of **endpoints**: web addresses on Clink's server that the a
 | 2 | POST | `/api/auth/login` | 🔓 | Log in, get a token | US-1 |
 | 3 | GET | `/api/me` | 🔑 | Get my profile | US-1 |
 | 4 | PATCH | `/api/me` | 🔑 | Update name or time zone | US-1 |
-| 5 | DELETE | `/api/me` | 🔑 | Delete my account and all my data | US-1 |
+| 5 | DELETE | `/api/me` | 🔑 | Delete my account and all my data (password required) | US-1 |
 | 6 | GET | `/api/budgets` | 🔑 | Get my weekly budget and daily caps | US-2 |
 | 7 | PUT | `/api/budgets` | 🔑 | Set or change my weekly budget and daily caps | US-2 |
 | 8 | GET | `/api/status` | 🔑 | Home screen: today + this week, what's left, jar stage | US-4, US-5 |
@@ -145,24 +145,46 @@ Notes:
 
 ---
 
-### 13. `GET /api/history?range=daily&from=2026-10-01&to=2026-10-28` 🔑
-`range` is `daily` or `weekly`.
+### 13. `GET /api/history?range=daily&from=2026-10-25&to=2026-10-28` 🔑
+`range` is `daily` (default) or `weekly`. `from` / `to` are optional dates in the user's time zone; by default it shows the last 30 days or 12 weeks, never before the account was created.
 
-**Response `200 OK`**
+**Response `200 OK`** (newest first; days with $0 spent are included)
 ```json
 {
   "range": "daily",
   "periods": [
-    { "start": "2026-10-28", "spent": 32.00, "budget": 40.00, "over": false },
-    { "start": "2026-10-27", "spent": 47.25, "budget": 40.00, "over": true }
+    { "start": "2026-10-28", "spent": 6,  "budget": 20, "over": false },
+    { "start": "2026-10-27", "spent": 25, "budget": 20, "over": true },
+    { "start": "2026-10-26", "spent": 8,  "budget": 20, "over": false }
   ]
 }
 ```
+- Weekly periods start on Monday. `budget` is `null` if that budget is off.
+- *Known limitation:* past periods are compared with the **current** budget, since budget changes aren't stored as history yet.
 
-### 14. `GET /api/purchases?date=2026-10-28` 🔑
+### 14. `GET /api/purchases?date=2026-10-26` 🔑
 ```json
-{ "date": "2026-10-28", "purchases": [ { "id": 42, "amount": 6.00, "merchant": "Starbucks", "purchased_at": "2026-10-28T15:42:10Z" } ] }
+{
+  "date": "2026-10-26",
+  "total": 8,
+  "purchases": [
+    { "id": 3, "amount": 8, "merchant": "Whataburger", "purchased_at": "2026-10-27T04:30:00.000Z" }
+  ]
+}
 ```
+(That purchase was at 11:30 PM Monday in College Station, so it's listed under Monday even though it's Tuesday in UTC.)
+
+### 15–16. `GET` / `PATCH /api/settings` 🔑
+```json
+{ "notifications_on": true, "sound_on": true, "reduce_motion": false, "alert_threshold_pct": 75 }
+```
+`PATCH` changes only the settings sent, e.g. `{ "sound_on": false }`. `alert_threshold_pct` is a whole number from 1 to 99.
+
+### 4. `PATCH /api/me` 🔑
+`{ "name": "Marie-Blanche", "timezone": "America/New_York" }`: either or both.
+
+### 5. `DELETE /api/me` 🔑
+`{ "password": "********" }` → `204 No Content`. Deletes the account **and** all its settings, budgets, and purchases. The password is required again so an open session can't delete an account by accident.
 
 ---
 
