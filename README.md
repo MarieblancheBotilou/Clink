@@ -72,4 +72,4 @@ Clink/
 **Marie-Blanche Boti Lou**, Learning Technology & Performance Systems, Texas A&M University
 
 ## License
-Released under the [MIT License](LICENSE).
+© 2026 Marie-Blanche Boti Lou. All rights reserved. This code is shared for portfolio viewing only; see [LICENSE](LICENSE).
