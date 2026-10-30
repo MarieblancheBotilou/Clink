@@ -1,5 +1,7 @@
 # Clink 🪙
 
+[![Tests](https://github.com/MarieblancheBotilou/Clink/actions/workflows/test.yml/badge.svg)](https://github.com/MarieblancheBotilou/Clink/actions/workflows/test.yml)
+
 **Hear the clink. Stop and think.**
 
 Clink makes Apple Pay spending feel real again. Set a daily or weekly cap, and every time you tap to pay you hear a *clink* and get a notification showing what you spent and what's left.
@@ -40,7 +42,7 @@ Three simulated Apple Pay purchases against a $20/day, $140/week budget. Each on
 | API design | ✅ Done |
 | Figma designs | 🔄 Next |
 | Backend (Node.js, Express, Sequelize, PostgreSQL) | ✅ Done: all MVP endpoints, 67 tests ([details](server/README.md)) |
-| Frontend (React) | ⏳ Next |
+| Frontend (React) | ⏳ After Figma |
 | Shortcut integration & deployment | ⏳ Planned |
 
 ## Tech stack
