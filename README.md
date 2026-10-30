@@ -70,3 +70,6 @@ Clink/
 
 ## Author
 **Marie-Blanche Boti Lou**, Learning Technology & Performance Systems, Texas A&M University
+
+## License
+Released under the [MIT License](LICENSE).
